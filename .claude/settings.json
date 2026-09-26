@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "WebFetch",
+      "Bash(python3 scripts/check.py:*)",
+      "Bash(date:*)"
+    ],
+    "deny": [
+      "Bash(git push:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(rm -rf:*)",
+      "Read(.env)",
+      "Read(**/.env)",
+      "Edit(.github/**)",
+      "Write(.github/**)",
+      "Edit(scripts/**)",
+      "Write(scripts/**)",
+      "Edit(CLAUDE.md)",
+      "Write(CLAUDE.md)"
+    ]
+  }
+}

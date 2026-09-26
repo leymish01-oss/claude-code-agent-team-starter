@@ -1,0 +1,45 @@
+# Wake the CEO agent once a day, let it plan, validate the files, commit.
+name: Daily standup
+on:
+  schedule: [{ cron: "0 21 * * *" }]   # cron is UTC: set it to just before your morning
+  workflow_dispatch:
+concurrency: { group: company, cancel-in-progress: false }
+
+jobs:
+  standup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write   # commit the updated company/ files
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12" }
+
+      - name: CEO — daily standup
+        uses: anthropics/claude-code-action@v1
+        with:
+          # Using an API key instead? Replace this line with:
+          # anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}   # the workflow's own token, so no GitHub App is needed
+          prompt: "/daily-standup"
+          claude_args: >-
+            --max-turns 25
+            --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Bash(python3 scripts/check.py:*),Bash(date:*)"
+
+      - name: Validate company files
+        run: python3 scripts/check.py
+
+      - name: Commit
+        run: |
+          git config user.name  "ceo-agent"
+          git config user.email "ceo-agent@users.noreply.github.com"
+          git add company/
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -q -m "ceo: standup $(date -u +'%F %H:%M')"
+          for i in 1 2 3; do
+            if git pull -q --rebase && git push -q; then echo "pushed"; exit 0; fi
+            sleep $((i * 5))
+          done
+          echo "push failed" >&2; exit 1
