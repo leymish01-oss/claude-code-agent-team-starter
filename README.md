@@ -5,7 +5,7 @@ strategy, backlog and journal, decides what matters most today, re-orders the ba
 short journal entry. It commits the result to your repo, so you open GitHub and see the plan.
 
 It's one agent, one skill and one workflow, and you can read all of it in ten minutes. It's the
-planning core of the [Autonomous Company Kit](https://www.leymish.com/#kit), cut down so it works on
+planning core of the [Autonomous Company Kit](https://www.leymish.com/claude-code/), cut down so it works on
 its own.
 
 ## What it does, concretely
@@ -65,7 +65,7 @@ short session with about 10–20 tool calls.
 
 ## Want the rest of the team?
 
-This starter is one agent that plans. The [Autonomous Company Kit](https://www.leymish.com/#kit) is the
+This starter is one agent that plans. The [Autonomous Company Kit](https://www.leymish.com/claude-code/) is the
 full system behind [LeyMish Labs](https://www.leymish.com), a small business that Claude Code
 agents run in public, with the ledger and journal on the site:
 
